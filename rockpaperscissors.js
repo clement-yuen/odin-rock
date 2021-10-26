@@ -4,7 +4,7 @@
  //generate random integer number from 0 to 2, stored in a variable called randomInt
 // assign 0 to rock, 1 to paper, and 2 to scissors
 //return the string result of rock, paper, or scissors
-
+let counter = 1;
 
 function computerSelection() {
     let randomInt = Math.floor(Math.random() * 3);
@@ -38,8 +38,8 @@ function playRound(playerSelection, computerSelection) {
         print_comp_choice = "Scissor";
     }
 
-
-    console.log(`User chose ${playerSelection} and computer chose ${print_comp_choice}`);
+    const selection = document.querySelector(".selection");
+    selection.textContent =`User chose ${playerSelection} and computer chose ${print_comp_choice}`;
 
     //assign user input
     if (playerSelection === "Rock") {
@@ -51,28 +51,39 @@ function playRound(playerSelection, computerSelection) {
     else {
         playerSelection = 0;
     }
-
+    
     //game logic comparison
 
+    const result = document.querySelector(".result");
+    
+
     if (playerSelection === computerSelection) {
+        // result.textContent = "It's a tie!";
         return("It's a tie!");
     }
     else if (playerSelection + computerSelection === 2) {
         if (playerSelection === 0 && computerSelection === 2) {
+            // result.textContent = "Player wins!";
             return("Player wins!");
+            
         }
         else {
+            // result.textContent = "Computer wins!";
             return("Computer wins!");
+            
         }
     }
     else if (playerSelection > computerSelection) {
+        // result.textContent = "Player wins!";
         return("Player wins!")
+        
     }
     else {
+        // result.textContent = "Computer wins!";
         return ("Computer wins!");
+        
     }
 
-    
     // equal tie
     //rock 1 paper 2
     //rock 1 scissors 0
@@ -88,76 +99,83 @@ function playRound(playerSelection, computerSelection) {
 //while loop from 0 until 5
 // prompt user for input, increment counter by 1 and add tally the scores
 // output the final result
+let player_score = 0;
+let computer_score = 0;
+const finalresult = document.querySelector(".finalresult");
 
-function game() {
-    let counter = 1;
-    let player_score = 0;
-    let computer_score = 0;
-    let check_input;
-    let userInput;
-  
 
-    while (counter < 6) {
-       
-        check_input = false;
-        
-        while (check_input === false) {
-            userInput = prompt("Enter Rock, Paper, or Scissor").toUpperCase();  
-            if (userInput == "ROCK") {
-                check_input = true;
-               
-            }
-            else if (userInput == "PAPER") {
-                check_input = true;
-                
-
-            }
-            else if (userInput == "SCISSOR") {
-                check_input = true;
-                
-            }
-            else if (userInput == "") {
-                
-                alert("enter valid input");
-
-            } 
-            else {
-                alert("enter valid input");
-            }
-            
-            
-        }
+function game(userInput) {
+    
+    console.log(counter);
+    console.log(player_score);
+    
+    if (counter < 6 && counter != 5) {
         
 
-        let result = playRound(userInput, computerSelection());
-        console.log(`The result of round ${counter} is ${result}`);
-
-        if (result === "Player wins!") {
-            player_score ++;
+        play(userInput);
+        counter++;
+        
+        finalresult.textContent ="";
+    }
+   
+    else {  
+        console.log("trigger");
+        
+        play(userInput);
+    
+        let final_result = "";
+        if (player_score === computer_score) {
+        final_result = "It's a tie!";
         }
-        else if (result === "Computer wins!") {
-            computer_score ++;
+        else if (player_score > computer_score) {
+        final_result = "Player wins!";
         }
         else {
-            computer_score ++;
-            player_score ++;
+            final_result = "Computer wins!";
+        }
+    
+    
+        
+        finalresult.textContent =`The final score of player is ${player_score} and final score of computer is ${computer_score}!\n The final result is ${final_result}`;
+        
+        
+
+        player_score = 0;
+        computer_score = 0;
+        counter = 1;
+        
+    }
+    
+}
+    
+
+
+
+
+const rock = document.querySelector(".rock");
+rock.addEventListener("click", () => {game("Rock")});
+
+const paper = document.querySelector(".paper");
+paper.addEventListener("click", () => {game("Paper")});
+
+const scissor = document.querySelector(".scissor");
+scissor.addEventListener("click", () => {game("Scissor")});
+
+function play(userInput) {
+    let result = playRound(userInput, computerSelection());
+        const roundresult = document.querySelector(".roundresult");
+
+        if (result === "Player wins!") {
+        player_score ++;
+            }
+        else if (result === "Computer wins!") {
+        computer_score ++;
+        }
+        else {
+        computer_score ++;
+        player_score ++;
         }
         
-        counter ++;
-
-    }
-    
-    let final_result = "";
-    if (player_score === computer_score) {
-        final_result = "It's a tie!";
-    }
-    else if (player_score > computer_score) {
-        final_result = "Player wins!";
-    }
-    else {
-        final_result = "Computer wins!";
-    }
-    
-
-    console.log(`The final score of player is ${player_score} and final score of computer is ${computer_score}!\n The final result is ${final_result}`);
+        roundresult.textContent =`The result of round ${counter} is ${result}\n`;
+       
 }
